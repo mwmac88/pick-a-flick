@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import debounce from 'lodash.debounce';
 import { useNavigate, useLocation } from '@reach/router';
+import queryString from 'query-string';
 
 import api from '../../utils/api';
 import { deduplicateMovies } from '../../utils/helpers';
@@ -21,8 +22,6 @@ const Movies: React.FC<CardsViewProps> = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log(location);
-
   useGlobalWindowScroll(
     debounce(() => {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
@@ -33,10 +32,12 @@ const Movies: React.FC<CardsViewProps> = () => {
 
   useEffect(() => {
     const apiCall = new api();
+    const parsedUrlParams = queryString.parse(location.search);
+    const genres = parsedUrlParams.genres?.toString();
 
     async function fetchData() {
       try {
-        let top20 = await apiCall.getPopularMovies(page);
+        let top20 = await apiCall.getMovies(genres);
         setMovies((m) => {
           const mergeMovies = [...m, ...top20.data.results];
           return deduplicateMovies(mergeMovies);
@@ -47,7 +48,7 @@ const Movies: React.FC<CardsViewProps> = () => {
     }
 
     fetchData();
-  }, [page]);
+  }, [location.search, page]);
 
   const loadMoreMovies = () => {
     setIsLoading(true);
@@ -58,7 +59,7 @@ const Movies: React.FC<CardsViewProps> = () => {
     <div className='container mx-auto xs:px-4 sm:px-3 md:px-2'>
       <button
         onClick={() => {
-          navigate('?genres=action');
+          navigate('/movies?genres=action');
         }}
       >
         Action

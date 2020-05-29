@@ -43,7 +43,7 @@ const App: React.FC = () => {
         <Router>
           <Movies path='/' />
           <Movies path='/movies' />
-          <MovieView path='movie/:movieId' />
+          <MovieView path='movie/:movieId' movieId={0} />
           <Login path='/login' />
         </Router>
         <div className='fixed bottom-8 right-8 flex justify-center items-center'>

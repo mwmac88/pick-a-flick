@@ -1,5 +1,15 @@
 import axios from 'axios';
 
+import { stringifyUrl } from 'query-string';
+
+interface MovieParams {
+  api_key: string;
+  language?: string;
+  sortBy?: string;
+  with_genres?: string;
+  'vote_average.gte'?: string;
+}
+
 export default class api {
   async getPopularMovies(pageNumber = 1) {
     return axios(
@@ -7,13 +17,13 @@ export default class api {
     );
   }
 
-  async getRecommendedMovies(movieId) {
+  async getRecommendedMovies(movieId: number) {
     return axios(
       `https://${process.env.REACT_APP_TMDB_URL}/movie/${movieId}/recommendations?&language=en-UK&api_key=${process.env.REACT_APP_TMDB_APIKEY}`
     );
   }
 
-  async getMovieInfo(movieId) {
+  async getMovieInfo(movieId: number) {
     return axios(
       `https://${process.env.REACT_APP_TMDB_URL}/movie/${movieId}?&language=en-UK&api_key=${process.env.REACT_APP_TMDB_APIKEY}`
     );
@@ -25,9 +35,17 @@ export default class api {
     );
   }
 
-  async getTop20RatedWithGenre(genreId) {
-    return axios(
-      `https://${process.env.REACT_APP_TMDB_URL}/discover/movie?sort_by=popularity.desc&vote_average.gte=7.5&with_genres=${genreId}&language=en-UK&api_key=${process.env.REACT_APP_TMDB_APIKEY}`
-    );
+  async getMovies(genreIds?: string, voteAverage?: MovieParams['vote_average.gte']) {
+    const urlParams: MovieParams = {
+      api_key: process.env.REACT_APP_TMDB_APIKEY || '',
+      language: 'en-uk',
+      with_genres: genreIds,
+      'vote_average.gte': voteAverage
+    }
+    console.log(genreIds);
+
+    const stringyUrl = stringifyUrl({url: `https://${process.env.REACT_APP_TMDB_URL}/discover/movie`, query: { ...urlParams } });
+
+    return axios(stringyUrl);
   }
 }

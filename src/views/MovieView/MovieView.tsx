@@ -23,7 +23,7 @@ const mockMovieDetails = {
 
 interface MovieViewProps extends RouteComponentProps {
   path: string;
-  movieId?: number;
+  movieId: number;
 }
 
 const MovieView: React.FC<MovieViewProps> = ({ movieId }) => {
