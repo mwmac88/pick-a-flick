@@ -73,12 +73,13 @@ const MovieView: React.FC<MovieViewProps> = ({ movieId }) => {
           <div className='flex justify-center items-center'>
             <div className='absolute bottom-8 text-center'>
               {movieInfo.genres.map((genre: Genre) => (
-                <span
+                <Link
+                  to={`/movies/?with_genres=${genre.id}`}
                   key={genre.id}
                   className='bg-blue-500 hover:bg-blue-700 text-xl text-white py-2 px-4 rounded-full mx-1'
                 >
                   {genre.name}
-                </span>
+                </Link>
               ))}
             </div>
           </div>

@@ -19,3 +19,18 @@ export interface MovieDetails {
   tagline: string;
   title: string;
 }
+
+enum SortBy {
+  'vote_average.asc',
+  'vote_average.desc',
+}
+
+export interface MovieParams {
+  sort_by?: SortBy;
+  with_genres?: string;
+  'vote_average.gte'?: string;
+  'vote_average.lte'?: string;
+  'release_date.gte'?: string;
+  'release_date.lte'?: string;
+  year?: string;
+}

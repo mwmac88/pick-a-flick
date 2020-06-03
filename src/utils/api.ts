@@ -1,14 +1,5 @@
-import axios from 'axios';
-
-import { stringifyUrl } from 'query-string';
-
-interface MovieParams {
-  api_key: string;
-  language?: string;
-  sortBy?: string;
-  with_genres?: string;
-  'vote_average.gte'?: string;
-}
+import axios, { AxiosResponse } from 'axios';
+import { stringifyUrl, ParsedQuery } from 'query-string';
 
 export default class api {
   async getPopularMovies(pageNumber = 1) {
@@ -35,16 +26,21 @@ export default class api {
     );
   }
 
-  async getMovies(genreIds?: string, voteAverage?: MovieParams['vote_average.gte']) {
-    const urlParams: MovieParams = {
-      api_key: process.env.REACT_APP_TMDB_APIKEY || '',
+  async getMovies(
+    urlParams: ParsedQuery,
+    pageNumber: number
+  ): Promise<AxiosResponse> {
+    const queryParams = {
+      api_key: process.env.REACT_APP_TMDB_APIKEY,
+      include_adult: 'false',
       language: 'en-uk',
-      with_genres: genreIds,
-      'vote_average.gte': voteAverage
-    }
-    console.log(genreIds);
-
-    const stringyUrl = stringifyUrl({url: `https://${process.env.REACT_APP_TMDB_URL}/discover/movie`, query: { ...urlParams } });
+      page: pageNumber.toString(),
+      ...urlParams,
+    };
+    const stringyUrl = stringifyUrl({
+      url: `https://${process.env.REACT_APP_TMDB_URL}/discover/movie`,
+      query: { ...queryParams },
+    });
 
     return axios(stringyUrl);
   }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import debounce from 'lodash.debounce';
-import { useNavigate, useLocation } from '@reach/router';
+import { useLocation } from '@reach/router';
 import queryString from 'query-string';
 
 import api from '../../utils/api';
@@ -9,7 +9,7 @@ import { useGlobalWindowScroll } from '../../utils/use-window-event';
 
 import CardsView from '../CardsView/CardsView';
 
-import { Movie } from '../../types';
+import { Movie, MovieParams } from '../../types';
 
 interface CardsViewProps {
   path: string;
@@ -17,14 +17,17 @@ interface CardsViewProps {
 
 const Movies: React.FC<CardsViewProps> = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [page, setPage] = useState(1);
+  const [pageNumber, setPageNumber] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
+  const [urlParams, setUrlParams] = useState<MovieParams>({});
   const location = useLocation();
 
   useGlobalWindowScroll(
     debounce(() => {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      if (
+        Math.round(window.innerHeight + window.scrollY) >=
+        document.body.offsetHeight
+      ) {
         loadMoreMovies();
       }
     }, 300)
@@ -33,37 +36,28 @@ const Movies: React.FC<CardsViewProps> = () => {
   useEffect(() => {
     const apiCall = new api();
     const parsedUrlParams = queryString.parse(location.search);
-    const genres = parsedUrlParams.genres?.toString();
 
     async function fetchData() {
       try {
-        let top20 = await apiCall.getMovies(genres);
-        setMovies((m) => {
-          const mergeMovies = [...m, ...top20.data.results];
-          return deduplicateMovies(mergeMovies);
-        });
+        let top20 = await apiCall.getMovies(parsedUrlParams, pageNumber);
+        setMovies((m) => deduplicateMovies([...m, ...top20.data.results]));
       } finally {
         setIsLoading(false);
+        setUrlParams({ ...parsedUrlParams });
       }
     }
 
     fetchData();
-  }, [location.search, page]);
+  }, [location.search, pageNumber]);
 
   const loadMoreMovies = () => {
     setIsLoading(true);
-    setPage(page + 1);
+    setPageNumber(pageNumber + 1);
   };
 
   return (
     <div className='container mx-auto xs:px-4 sm:px-3 md:px-2'>
-      <button
-        onClick={() => {
-          navigate('/movies?genres=action');
-        }}
-      >
-        Action
-      </button>
+      <p>UrlParams: {Object.entries(urlParams).map((val) => `${val} &`)}</p>
       <CardsView movies={movies} />
       {isLoading && (
         <div className='static bottom-8 flex justify-center items-center'>

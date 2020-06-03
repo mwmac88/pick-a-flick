@@ -33,7 +33,10 @@ const Shuffler: React.FC<Props> = ({ setModalVisible }) => {
     const apiCall = new api();
     const genreResults = async () => {
       const moviesInGenre = await apiCall.getMovies(
-        radioSelected.id.toString()
+        {
+          with_genres: radioSelected.id.toString(),
+        },
+        Math.floor(Math.random() * 40) + 1
       );
       setMovieResult(getRandomMovieFromList(moviesInGenre.data.results));
     };
