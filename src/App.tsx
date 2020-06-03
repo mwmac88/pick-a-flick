@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Router, Link } from '@reach/router';
 import 'firebase/firestore';
 
@@ -18,6 +18,13 @@ import ShuffleIcon from '@material-ui/icons/Shuffle';
 
 const App: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [sidePanelVisible, setSidePanelVisible] = useState(false);
+
+  useEffect(() => {
+    sidePanelVisible
+      ? document.body.classList.add('overflow-y-hidden')
+      : document.body.classList.remove('overflow-y-hidden');
+  }, [sidePanelVisible]);
 
   return (
     <ProvideAuth>
@@ -41,8 +48,16 @@ const App: React.FC = () => {
       </header>
       <main>
         <Router>
-          <Movies path='/' />
-          <Movies path='/movies' />
+          <Movies
+            path='/'
+            isSidePanelOpen={sidePanelVisible}
+            setSidePanelVisible={setSidePanelVisible}
+          />
+          <Movies
+            path='/movies'
+            isSidePanelOpen={sidePanelVisible}
+            setSidePanelVisible={setSidePanelVisible}
+          />
           <MovieView path='movie/:movieId' movieId={0} />
           <Login path='/login' />
         </Router>
