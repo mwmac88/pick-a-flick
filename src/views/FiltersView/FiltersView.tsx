@@ -1,11 +1,28 @@
 import React from 'react';
 
-interface FiltersViewProps {}
+import useGenres from '../../utils/use-genres';
 
-const FilterView: React.FC<FiltersViewProps> = () => {
+interface FiltersViewProps {
+  selectedGenres?: string;
+}
+
+const FilterView: React.FC<FiltersViewProps> = ({ selectedGenres }) => {
+  const genres = useGenres();
+  const splitGenres = selectedGenres?.split(',');
+
   return (
     <div>
-      <h1>FiltersView Content</h1>
+      <h2>Filter by:</h2>
+      {genres.map((genre) => (
+        <div
+          key={genre.id}
+          className={
+            splitGenres?.includes(genre.id.toString()) ? 'bg-orange-500' : ''
+          }
+        >
+          {genre.name}
+        </div>
+      ))}
     </div>
   );
 };

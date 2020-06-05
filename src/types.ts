@@ -20,13 +20,14 @@ export interface MovieDetails {
   title: string;
 }
 
-enum SortBy {
-  'vote_average.asc',
-  'vote_average.desc',
-}
+// TODO: Add further sort_by values
+// enum SortBy {
+//   'vote_average.asc',
+//   'vote_average.desc',
+// }
 
 export interface MovieParams {
-  sort_by?: SortBy;
+  sort_by?: string;
   with_genres?: string;
   'vote_average.gte'?: string;
   'vote_average.lte'?: string;
