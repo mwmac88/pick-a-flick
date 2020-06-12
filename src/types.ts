@@ -22,6 +22,8 @@ export interface MovieDetails {
 
 // TODO: Add further sort_by values
 // enum SortBy {
+//   'popularity.asc',
+//   'popularity.desc',
 //   'vote_average.asc',
 //   'vote_average.desc',
 // }

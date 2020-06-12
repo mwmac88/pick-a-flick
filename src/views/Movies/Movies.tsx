@@ -4,7 +4,7 @@ import debounce from 'lodash.debounce';
 import SidePanel from '../../components/SidePanel/SidePanel';
 
 import api from '../../utils/api';
-import { deduplicateMovies } from '../../utils/helpers';
+import { deduplicateMovies, genresListIds } from '../../utils/helpers';
 import { useGlobalWindowScroll } from '../../utils/use-window-event';
 
 import CardsView from '../CardsView/CardsView';
@@ -73,7 +73,7 @@ const Movies: React.FC<CardsViewProps> = ({
         isSidePanelOpen={isSidePanelOpen}
         closeSidePanel={() => setSidePanelVisible(false)}
       >
-        <FiltersView selectedGenres={urlParams.with_genres} />
+        <FiltersView selectedGenres={genresListIds(urlParams.with_genres)} />
       </SidePanel>
       <div className='container mx-auto xs:px-4 sm:px-3 md:px-2'>
         <p>UrlParams: {Object.entries(urlParams).map((val) => `${val} &`)}</p>
