@@ -45,7 +45,12 @@ const Movies: React.FC<CardsViewProps> = ({
     async function fetchData() {
       try {
         let top20 = await apiCall.getMovies({ ...urlParams }, pageNumber);
-        setMovies((m) => deduplicateMovies([...m, ...top20.data.results]));
+
+        if (pageNumber > 1) {
+          setMovies((m) => deduplicateMovies([...m, ...top20.data.results]));
+        } else {
+          setMovies(() => deduplicateMovies([...top20.data.results]));
+        }
       } finally {
         setIsLoading(false);
       }
@@ -55,8 +60,13 @@ const Movies: React.FC<CardsViewProps> = ({
   }, [urlParams, pageNumber]);
 
   const loadMoreMovies = () => {
-    setIsLoading(true);
     setPageNumber(pageNumber + 1);
+  };
+
+  const refreshMovies = () => {
+    setIsLoading(true);
+    setSidePanelVisible(false);
+    setPageNumber(1);
   };
 
   return (
@@ -73,7 +83,10 @@ const Movies: React.FC<CardsViewProps> = ({
         isSidePanelOpen={isSidePanelOpen}
         closeSidePanel={() => setSidePanelVisible(false)}
       >
-        <FiltersView selectedGenres={genresListIds(urlParams.with_genres)} />
+        <FiltersView
+          selectedGenres={genresListIds(urlParams.with_genres)}
+          applyFilters={() => refreshMovies()}
+        />
       </SidePanel>
       <div className='container mx-auto xs:px-4 sm:px-3 md:px-2'>
         <p>UrlParams: {Object.entries(urlParams).map((val) => `${val} &`)}</p>

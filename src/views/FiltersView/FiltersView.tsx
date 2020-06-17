@@ -8,9 +8,13 @@ import useGenres from '../../utils/use-genres';
 
 interface FiltersViewProps {
   selectedGenres: number[];
+  applyFilters: Function;
 }
 
-const FilterView: React.FC<FiltersViewProps> = ({ selectedGenres }) => {
+const FilterView: React.FC<FiltersViewProps> = ({
+  selectedGenres,
+  applyFilters,
+}) => {
   const navigate = useNavigate();
   const genres = useGenres();
 
@@ -18,7 +22,9 @@ const FilterView: React.FC<FiltersViewProps> = ({ selectedGenres }) => {
 
   const updateDisplayGenres = (genreId: number) => {
     if (displayGenres.includes(genreId)) {
-      console.log('Genre already selected');
+      setDisplayGenres(() =>
+        displayGenres.filter((genre) => genre !== genreId)
+      );
     } else {
       setDisplayGenres([...displayGenres, genreId]);
     }
@@ -30,6 +36,7 @@ const FilterView: React.FC<FiltersViewProps> = ({ selectedGenres }) => {
     };
     const newUrlWithParams = `?${stringify(params)}`;
     navigate(newUrlWithParams);
+    applyFilters();
   };
 
   useEffect(() => {
