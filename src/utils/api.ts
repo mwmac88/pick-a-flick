@@ -28,7 +28,7 @@ export default class api {
 
   async getMovies(
     urlParams: ParsedQuery,
-    pageNumber: number
+    pageNumber: number = 1
   ): Promise<AxiosResponse> {
     const queryParams = {
       api_key: process.env.REACT_APP_TMDB_APIKEY,

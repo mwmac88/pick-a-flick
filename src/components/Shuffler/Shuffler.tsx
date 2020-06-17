@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from '@reach/router';
 
 import Card from '../Card/Card';
 
 import api from '../../utils/api';
+import useGenres from '../../utils/use-genres';
 import { getRandomMovieFromList } from '../../utils/helpers';
 import { Genre, Movie } from '../../types';
 
@@ -12,18 +13,9 @@ interface Props {
 }
 
 const Shuffler: React.FC<Props> = ({ setModalVisible }) => {
-  const [genres, setGenres] = useState([] as Genre[]);
   const [radioSelected, setRadioSelected] = useState({} as Genre);
   const [movieResult, setMovieResult] = useState({} as Movie);
-
-  useEffect(() => {
-    const apiCall = new api();
-    const fetchGenres = async () => {
-      const retrieveGenres = await apiCall.getAllGenres();
-      setGenres(retrieveGenres.data.genres);
-    };
-    fetchGenres();
-  }, []);
+  const genres = useGenres();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

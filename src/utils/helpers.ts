@@ -20,3 +20,7 @@ export function deduplicateMovies(mergedMovies: Array<Movie>) {
     return acc;
   }, []);
 }
+
+export function genresListIds(genres?: string): Array<number> {
+  return genres ? genres.split(',').map((genreId) => parseInt(genreId)) : [];
+}
