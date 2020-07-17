@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import debounce from 'lodash.debounce';
 
 import SidePanel from '../../components/SidePanel/SidePanel';
@@ -7,11 +7,13 @@ import api from '../../utils/api';
 import { deduplicateMovies, genresListIds } from '../../utils/helpers';
 import { useGlobalWindowScroll } from '../../utils/use-window-event';
 
-import CardsView from '../CardsView/CardsView';
 import FiltersView from '../FiltersView/FiltersView';
 
 import { Movie } from '../../types';
 import useUrlParams from '../../utils/use-urlparams';
+import Loader from '../../components/Loader/Loader';
+
+const CardsView = lazy(() => import('../CardsView/CardsView'));
 
 interface CardsViewProps {
   path: string;
@@ -90,14 +92,10 @@ const Movies: React.FC<CardsViewProps> = ({
       </SidePanel>
       <div className='container mx-auto xs:px-4 sm:px-3 md:px-2'>
         <p>UrlParams: {Object.entries(urlParams).map((val) => `${val} &`)}</p>
-        <CardsView movies={movies} />
-        {isLoading && (
-          <div className='static bottom-8 flex justify-center items-center'>
-            <span className='flex justify-center items-center w-32 h-32 rounded-full bg-orange-500 text-xl text-center font-bold text-white p-6 leading-snug hover:bg-orange-600 cursor-pointer transform transition-transform hover:scale-125 duration-300 ease-in-out'>
-              Loading
-            </span>
-          </div>
-        )}
+
+        <Suspense fallback={<Loader isLoading={isLoading} />}>
+          <CardsView movies={movies} />
+        </Suspense>
       </div>
     </>
   );
