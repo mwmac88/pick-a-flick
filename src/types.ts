@@ -14,10 +14,11 @@ export interface MovieDetails {
   backdrop_path: string;
   genres: Array<Genre>;
   overview: string;
-  releaseDate: string;
+  release_date: string;
   runtime: number;
   tagline: string;
   title: string;
+  vote_count: number;
 }
 
 // TODO: Add further sort_by values
@@ -36,4 +37,11 @@ export interface MovieParams {
   'release_date.gte'?: string;
   'release_date.lte'?: string;
   year?: string;
+}
+
+export type APIResults = {
+  page: number;
+  total_results: number;
+  total_pages: number;
+  results: Movie[];
 }

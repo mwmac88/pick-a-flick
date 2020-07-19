@@ -11086,6 +11086,10 @@ body {
   transition-duration: 1000ms;
 }
 
+.react-datepicker__year .react-datepicker__year-wrapper {
+  max-width: 210px;
+}
+
 @media (max-width: 419px) {
   .xs\:sr-only {
     position: absolute;

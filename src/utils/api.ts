@@ -35,6 +35,7 @@ export default class api {
       include_adult: 'false',
       language: 'en-uk',
       page: pageNumber.toString(),
+      with_original_language: 'en',
       ...urlParams,
     };
     const stringyUrl = stringifyUrl({

@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { Link } from '@reach/router';
+import { format, startOfYear } from 'date-fns';
+import DatePicker from 'react-datepicker';
 
 import Card from '../Card/Card';
 
 import api from '../../utils/api';
 import useGenres from '../../utils/use-genres';
-import { getRandomMovieFromList } from '../../utils/helpers';
+import { getRandomMovieFromList, getRandomNum } from '../../utils/helpers';
 import { Genre, Movie } from '../../types';
+
+import "react-datepicker/dist/react-datepicker.css";
 
 interface Props {
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,7 +18,10 @@ interface Props {
 
 const Shuffler: React.FC<Props> = ({ setModalVisible }) => {
   const [radioSelected, setRadioSelected] = useState({} as Genre);
+  const [yearFrom, setYearFrom] = useState(startOfYear(new Date()));
+  const [isOnlyPopular, setIsOnlyPopular] = useState(false);
   const [movieResult, setMovieResult] = useState({} as Movie);
+  const [noResults, setNoResults] = useState(false);
   const genres = useGenres();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -23,14 +30,32 @@ const Shuffler: React.FC<Props> = ({ setModalVisible }) => {
 
   const getRandomMovieResult = () => {
     const apiCall = new api();
+
+    const options = {
+      with_genres: radioSelected.id.toString(),
+      sort_by: 'popularity.desc',
+      'primary_release_date.gte': format(yearFrom, 'yyyy-dd-MM'),
+      'vote_average.gte': '7',
+      'vote_count.gte': '150'
+    };
+
     const genreResults = async () => {
-      const moviesInGenre = await apiCall.getMovies(
-        {
-          with_genres: radioSelected.id.toString(),
-        },
-        Math.floor(Math.random() * 40) + 1
-      );
-      setMovieResult(getRandomMovieFromList(moviesInGenre.data.results));
+      const initialMovieList = await apiCall.getMovies(options);
+
+      if (initialMovieList.data.total_results === 0) {
+        setNoResults(true)
+      } else {
+        setNoResults(false);
+        const totalPages = initialMovieList.data.total_pages;
+
+        const randompageNum = totalPages === 1 ? 1 : getRandomNum(
+          isOnlyPopular ? 3 : initialMovieList.data.total_pages
+        );
+      
+        const randompageMovieList = await apiCall.getMovies(options, randompageNum);
+  
+        setMovieResult(getRandomMovieFromList(randompageMovieList.data.results));
+      }
     };
     genreResults();
   };
@@ -71,6 +96,27 @@ const Shuffler: React.FC<Props> = ({ setModalVisible }) => {
     <div className='m-6'>
       <h2>Movie Roulette</h2>
 
+      {radioSelected.id && (
+        <h3>Selected Genre: <span className='text-green-400 font-semibold'>{radioSelected.name}</span></h3>
+      )}
+
+      <label>Year from: </label>
+      <DatePicker
+        className='border border-orange-500 border-solid text-center font-semibold text-lg rounded w-full p-2 mb-6 cursor-pointer'
+        selected={yearFrom}
+        onChange={(date: Date) => setYearFrom(date)}
+        showYearPicker
+        dateFormat="yyyy"
+      />
+      
+      <div className="divide-y-2 divide-orange-400"></div>
+
+      <label>Show only popular:</label><input type='checkbox' checked={isOnlyPopular} onChange={() => setIsOnlyPopular(!isOnlyPopular)}/>
+
+      {noResults && (
+        <p>No Flicks Found. Try again!</p>
+      )}
+
       {movieResult && Object.keys(movieResult).length === 0 && (
         <>
           <form className='grid grid-cols-4 gap-3 my-8' onSubmit={handleSubmit}>
@@ -90,7 +136,7 @@ const Shuffler: React.FC<Props> = ({ setModalVisible }) => {
         </>
       )}
 
-      {movieResult && movieResult.id && (
+      {!noResults && movieResult && movieResult.id && (
         <>
           <h3>Your Selected Random Movie Is:</h3>
           <div className='w-2/3 grid xs:grid-cols-1 sm:grid-cols-2 col-gap-12 py-4 mx-auto'>

@@ -1,12 +1,16 @@
 import { Movie } from '../types';
 
-function getRandomNum(max: number): number {
-  return Math.floor(Math.random() * Math.floor(max));
+export function getRandomNum(max: number): number {
+  const generateRandomNum = () => Math.floor(Math.random() * Math.floor(max));
+  const randomNum = generateRandomNum();
+
+  return randomNum > 0 ? randomNum : getRandomNum(max);
 }
 
 export function getRandomMovieFromList(movieList: Movie[]): Movie {
-  const randomNum = getRandomNum(movieList.length - 1);
-  return movieList[randomNum];
+  const randomNum = movieList.length > 1 ? getRandomNum(movieList.length) : 1;
+
+  return movieList[randomNum - 1];
 }
 
 export function deduplicateMovies(mergedMovies: Array<Movie>) {
