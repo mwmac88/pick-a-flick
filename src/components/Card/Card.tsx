@@ -1,4 +1,5 @@
 import React from 'react';
+import { format } from 'date-fns';
 import { Movie } from '../../types';
 import LazyImage from '../LazyImage/LazyImage';
 
@@ -7,7 +8,7 @@ interface Props {
 }
 
 const Card: React.FC<Props> = ({ movie }) => {
-  const { title, vote_average: score, poster_path: imageUrl } = movie;
+  const { title, vote_average: score, poster_path: imageUrl, release_date } = movie;
   const imgUrl = `https://${process.env.REACT_APP_TMDB_POSTER_URL}${imageUrl}`;
 
   return (
@@ -26,7 +27,7 @@ const Card: React.FC<Props> = ({ movie }) => {
 
       <div className='flex justify-center text-center min-h-12 h-auto py-2'>
         <p className='text-gray-700 text-lg font-medium leading-tight'>
-          {title}
+          {title} <span className='font-light italic'>({format(new Date(release_date), 'yyyy')})</span>
         </p>
       </div>
     </div>
