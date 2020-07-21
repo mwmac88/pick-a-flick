@@ -8,7 +8,12 @@ interface Props {
 }
 
 const Card: React.FC<Props> = ({ movie }) => {
-  const { title, vote_average: score, poster_path: imageUrl, release_date } = movie;
+  const {
+    title,
+    vote_average: score,
+    poster_path: imageUrl,
+    release_date,
+  } = movie;
   const imgUrl = `https://${process.env.REACT_APP_TMDB_POSTER_URL}${imageUrl}`;
 
   return (
@@ -27,7 +32,12 @@ const Card: React.FC<Props> = ({ movie }) => {
 
       <div className='flex justify-center text-center min-h-12 h-auto py-2'>
         <p className='text-gray-700 text-lg font-medium leading-tight'>
-          {title} <span className='font-light italic'>({format(new Date(release_date), 'yyyy')})</span>
+          {title}
+          {release_date && release_date !== '' && (
+            <span className='font-light italic'>
+              ({format(new Date(release_date), 'yyyy')})
+            </span>
+          )}
         </p>
       </div>
     </div>

@@ -19,6 +19,7 @@ export interface MovieDetails {
   runtime: number;
   tagline: string;
   title: string;
+  vote_average: number;
   vote_count: number;
 }
 
@@ -45,4 +46,4 @@ export type APIResults = {
   total_results: number;
   total_pages: number;
   results: Movie[];
-}
+};
