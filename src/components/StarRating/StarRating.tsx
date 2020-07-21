@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// import styles from './StarRating.module.scss';
-
 const StarRatingSpan = styled.span<{ ratingValue: number }>`
   --star-size: 30px;
   --star-color: #fff;
