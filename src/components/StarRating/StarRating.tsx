@@ -16,7 +16,7 @@ const StarRatingSpan = styled.span<{ ratingValue: number }>`
   line-height: 1;
 
   &::before {
-    content: '★★★★★★★★★★';
+    content: '★★★★★';
     letter-spacing: 5px;
     background: linear-gradient(
       90deg,
