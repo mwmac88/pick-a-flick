@@ -9,26 +9,13 @@ import { useGlobalWindowScroll } from '../../utils/use-window-event';
 
 import FiltersView from '../FiltersView/FiltersView';
 
-import { Movie } from '../../types';
+import { Movie, SortBy } from '../../types';
 import useUrlParams from '../../utils/use-urlparams';
 import Loader from '../../components/Loader/Loader';
 import { stringify } from 'query-string';
 import { navigate } from '@reach/router';
 
 const CardsView = lazy(() => import('../CardsView/CardsView'));
-
-enum SortBy {
-  'Popluarity Asc' = 'popularity.asc',
-  'Popularity Desc' = 'popularity.desc',
-  'Release Date Asc' = 'release_date.asc',
-  'Release Date Desc' = 'release_date.desc',
-  'Rating Asc' = 'vote_average.asc',
-  'Rating Desc' = 'vote_average.desc',
-  'Revenue Asc' = 'revenue.asc',
-  'Revenue Desc' = 'revenue.desc',
-  'Title Asc' = 'original_title.asc',
-  'Title Desc' = 'original_title.desc',
-}
 
 interface CardsViewProps {
   path: string;
@@ -40,11 +27,10 @@ const Movies: React.FC<CardsViewProps> = ({
   isSidePanelOpen,
   setSidePanelVisible,
 }) => {
+  const urlParams = useUrlParams();
   const [movies, setMovies] = useState<Movie[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [sortBy, setSortBy] = useState<string>(SortBy['Popularity Desc']);
-  const urlParams = useUrlParams();
 
   useGlobalWindowScroll(
     debounce(() => {
@@ -75,7 +61,7 @@ const Movies: React.FC<CardsViewProps> = ({
     }
 
     fetchData();
-  }, [urlParams, pageNumber, sortBy]);
+  }, [urlParams, pageNumber]);
 
   const loadMoreMovies = () => {
     setPageNumber(pageNumber + 1);
@@ -89,7 +75,6 @@ const Movies: React.FC<CardsViewProps> = ({
 
   const sortMovies = (e: React.FormEvent, sortBy: SortBy) => {
     e.preventDefault();
-    setSortBy(sortBy);
     const sortByParam = `?${stringify({
       ...urlParams,
       sort_by: sortBy,
@@ -122,7 +107,7 @@ const Movies: React.FC<CardsViewProps> = ({
             }}
           >
             {Object.entries(SortBy).map(([name, value]) => (
-              <option value={name} selected={value === sortBy}>
+              <option value={name} selected={value === urlParams.sort_by}>
                 {name}
               </option>
             ))}
