@@ -23,16 +23,21 @@ export interface MovieDetails {
   vote_count: number;
 }
 
-// TODO: Add further sort_by values
-// enum SortBy {
-//   'popularity.asc',
-//   'popularity.desc',
-//   'vote_average.asc',
-//   'vote_average.desc',
-// }
+export enum SortBy {
+  'Popluarity Asc' = 'popularity.asc',
+  'Popularity Desc' = 'popularity.desc',
+  'Release Date Asc' = 'release_date.asc',
+  'Release Date Desc' = 'release_date.desc',
+  'Rating Asc' = 'vote_average.asc',
+  'Rating Desc' = 'vote_average.desc',
+  'Revenue Asc' = 'revenue.asc',
+  'Revenue Desc' = 'revenue.desc',
+  'Title Asc' = 'original_title.asc',
+  'Title Desc' = 'original_title.desc',
+}
 
 export interface MovieParams {
-  sort_by?: string;
+  sort_by?: SortBy;
   with_genres?: string;
   'vote_average.gte'?: string;
   'vote_average.lte'?: string;

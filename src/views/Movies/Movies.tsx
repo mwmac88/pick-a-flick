@@ -9,9 +9,11 @@ import { useGlobalWindowScroll } from '../../utils/use-window-event';
 
 import FiltersView from '../FiltersView/FiltersView';
 
-import { Movie } from '../../types';
+import { Movie, SortBy } from '../../types';
 import useUrlParams from '../../utils/use-urlparams';
 import Loader from '../../components/Loader/Loader';
+import { stringify } from 'query-string';
+import { navigate } from '@reach/router';
 
 const CardsView = lazy(() => import('../CardsView/CardsView'));
 
@@ -25,10 +27,10 @@ const Movies: React.FC<CardsViewProps> = ({
   isSidePanelOpen,
   setSidePanelVisible,
 }) => {
+  const urlParams = useUrlParams();
   const [movies, setMovies] = useState<Movie[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const urlParams = useUrlParams();
 
   useGlobalWindowScroll(
     debounce(() => {
@@ -71,15 +73,55 @@ const Movies: React.FC<CardsViewProps> = ({
     setPageNumber(1);
   };
 
+  const sortMovies = (e: React.FormEvent, sortBy: SortBy) => {
+    e.preventDefault();
+    const sortByParam = `?${stringify({
+      ...urlParams,
+      sort_by: sortBy,
+    })}`;
+    navigate(sortByParam);
+  };
+
   return (
     <>
       <div className='sticky top-0 flex justify-center items-center bg-gray-700 py-4 z-20'>
         <button
-          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
+          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4'
           onClick={() => setSidePanelVisible(true)}
         >
           Filter
         </button>
+
+        <label className='hidden' htmlFor='sort-by'>
+          Sort By:
+        </label>
+        <div className='relative'>
+          <select
+            className='block appearance-none w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full'
+            id='sort-by'
+            name='sortby'
+            onChange={(event) => {
+              const sortValue: SortBy =
+                SortBy[event.target.value as keyof typeof SortBy];
+              sortMovies(event, sortValue);
+            }}
+          >
+            {Object.entries(SortBy).map(([name, value]) => (
+              <option value={name} selected={value === urlParams.sort_by}>
+                {name}
+              </option>
+            ))}
+          </select>
+          <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white font-bold'>
+            <svg
+              className='fill-current h-4 w-4'
+              xmlns='http://www.w3.org/2000/svg'
+              viewBox='0 0 20 20'
+            >
+              <path d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z' />
+            </svg>
+          </div>
+        </div>
       </div>
       <SidePanel
         isSidePanelOpen={isSidePanelOpen}
