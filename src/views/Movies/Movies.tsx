@@ -1,19 +1,19 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import debounce from 'lodash.debounce';
+import { stringify } from 'query-string';
+import { navigate } from '@reach/router';
 
+import Loader from '../../components/Loader/Loader';
 import SidePanel from '../../components/SidePanel/SidePanel';
-
-import api from '../../utils/api';
-import { deduplicateMovies, genresListIds } from '../../utils/helpers';
-import { useGlobalWindowScroll } from '../../utils/use-window-event';
 
 import FiltersView from '../FiltersView/FiltersView';
 
-import { Movie, SortBy } from '../../types';
+import api from '../../utils/api';
+import { deduplicateMovies, genresListIds } from '../../utils/helpers';
 import useUrlParams from '../../utils/use-urlparams';
-import Loader from '../../components/Loader/Loader';
-import { stringify } from 'query-string';
-import { navigate } from '@reach/router';
+import { useGlobalWindowScroll } from '../../utils/use-window-event';
+
+import { Movie, SortBy } from '../../types';
 
 const CardsView = lazy(() => import('../CardsView/CardsView'));
 

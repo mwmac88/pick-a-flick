@@ -66,14 +66,23 @@ const MovieView: React.FC<MovieViewProps> = ({ movieId }) => {
       >
         <span className='absolute top-0 left-0 bg-gray-700 opacity-90 w-full min-h-full'></span>
         <div className='flex flex-col md:w-3/4 h-full justify-center py-8 z-10'>
-          <h1 className='text-white text-center py-2'>{movieInfo.title}</h1>
-          <div className='mx-auto'>
-            <StarRating
-              rating={movieInfo.vote_average ? movieInfo.vote_average : 0}
-            />
-          </div>
+          <h1 className='text-white text-center py-2 leading-tight md:leading-normal'>
+            {movieInfo.title}
+          </h1>
+
+          {movieInfo.vote_average > 0 && (
+            <div className='mx-auto'>
+              <StarRating
+                rating={movieInfo.vote_average ? movieInfo.vote_average : 0}
+              />
+              <p className='italic text-center text-sm text-gray-400'>
+                {movieInfo.vote_average} out of {movieInfo.vote_count} votes
+              </p>
+            </div>
+          )}
+
           {movieInfo.tagline && (
-            <h2 className='text-white text-base md:text-2xl font-body font-light italic text-center py-2 mb-4'>
+            <h2 className='text-white text-base md:text-2xl font-body font-light italic text-center py-2 mt-8 mb-4'>
               {movieInfo.tagline}
             </h2>
           )}
@@ -113,7 +122,7 @@ const MovieView: React.FC<MovieViewProps> = ({ movieId }) => {
             </div>
           )}
 
-          {movieInfo.runtime && movieInfo.runtime > 0 && (
+          {movieInfo.runtime > 0 && (
             <div className='flex-1 flex flex-col items-center justify-center'>
               <span className=''>Runtime</span>
               <span className='bg-orange-500 text-xl text-white py-2 px-4 rounded-full mx-1'>
