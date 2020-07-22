@@ -113,7 +113,7 @@ const MovieView: React.FC<MovieViewProps> = ({ movieId }) => {
             </div>
           )}
 
-          {movieInfo.runtime && (
+          {movieInfo.runtime && movieInfo.runtime > 0 && (
             <div className='flex-1 flex flex-col items-center justify-center'>
               <span className=''>Runtime</span>
               <span className='bg-orange-500 text-xl text-white py-2 px-4 rounded-full mx-1'>
