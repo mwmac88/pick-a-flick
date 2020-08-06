@@ -28,3 +28,22 @@ export function deduplicateMovies(mergedMovies: Array<Movie>) {
 export function genresListIds(genres?: string): Array<number> {
   return genres ? genres.split(',').map((genreId) => parseInt(genreId)) : [];
 }
+
+export function filter(obj: object, fun: Function): Object {
+  return Object.entries(obj).reduce(
+    (prev, [key, value]) => ({
+      ...prev,
+      ...(fun(key, value) ? { [key]: value } : {}),
+    }),
+    {}
+  );
+}
+
+export function stripEmpties(dirtyObject: { [x: string]: string }): Object {
+  const cleanObject = filter(
+    dirtyObject,
+    (_: string, val: string) => val !== ''
+  );
+
+  return cleanObject;
+}

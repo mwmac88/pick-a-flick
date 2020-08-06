@@ -14,7 +14,7 @@ const SidePanel: React.FC<SidePanelProps> = ({
   return (
     <>
       <div
-        className={`fixed top-0 left-0 w-full md:w-1/3 h-full bg-white z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 w-2/3 md:w-1/4 h-full bg-white z-50 transform transition-transform duration-300 ease-in-out ${
           isSidePanelOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

@@ -129,6 +129,11 @@ const Movies: React.FC<CardsViewProps> = ({
       >
         <FiltersView
           selectedGenres={genresListIds(urlParams.with_genres)}
+          selectedYear={
+            urlParams['release_date.gte']
+              ? new Date(urlParams['release_date.gte'])
+              : new Date(2000, 0, 1)
+          }
           applyFilters={() => refreshMovies()}
         />
       </SidePanel>
