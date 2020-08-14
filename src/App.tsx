@@ -27,9 +27,6 @@ const App: React.FC = () => {
   return (
     <ProvideAuth>
       <header className='flex flex-row items-center bg-orange-400 px-4'>
-        <span className='flex-auto text-gray-800 py-2 z-10 hover:text-white'>
-          <MenuIcon fontSize='large' className='cursor-pointer' />
-        </span>
         <Link to='/' className='flex-auto py-2'>
           <h1 className='text-white text-center sm:py-4 xs:text-4xl sm:text-4xl md:text-5xl'>
             Pick-A-Flick
