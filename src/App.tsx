@@ -11,7 +11,6 @@ import Login from './components/Auth/Login';
 import Movies from './views/Movies/Movies';
 import MovieView from './views/MovieView/MovieView';
 
-import MenuIcon from '@material-ui/icons/Menu';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
 
 const App: React.FC = () => {
