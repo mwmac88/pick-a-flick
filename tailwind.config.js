@@ -5,6 +5,7 @@ module.exports = {
       title: ['Bangers', 'cursive'],
     },
     fontSize: {
+      xxs: '0.55rem',
       xs: '0.75rem',
       sm: '0.875rem',
       base: '1rem',
@@ -60,10 +61,18 @@ module.exports = {
       },
     },
     screens: {
-      xs: { max: '419px' },
-      sm: { min: '420px' },
-      md: { min: '600px' },
-      lg: { min: '992px' },
+      xs: {
+        max: '419px'
+      },
+      sm: {
+        min: '420px'
+      },
+      md: {
+        min: '600px'
+      },
+      lg: {
+        min: '992px'
+      },
       xl: '1200px',
     },
     width: (theme) => ({

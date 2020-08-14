@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Router, Link } from '@reach/router';
 import 'firebase/firestore';
 
+import { ReactComponent as TMDBLogo } from './images/tmdblogo.svg';
+
 import { ProvideAuth } from './utils/use-auth.js';
 
 import Modal from './components/Modal/Modal';
@@ -64,6 +66,15 @@ const App: React.FC = () => {
           </Modal>
         )}
       </main>
+      <footer className='flex flex-col md:flex-row fixed bottom-0 left-0 items-center justify-center h-10 bg-orange-200 px-4 w-full'>
+        <p className='text-xxs md:text-xs text-center leading-tight'>
+          This product uses the TMDb API but is not endorsed or certified by
+          TMDb.
+        </p>
+        <a href='https://www.themoviedb.org/' className='my-1 md:my-0 md:ml-2'>
+          <TMDBLogo className='w-24 md:h-8' />
+        </a>
+      </footer>
     </ProvideAuth>
   );
 };

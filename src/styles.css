@@ -6766,7 +6766,6 @@ body {
 }
 
 .sticky {
-  position: -webkit-sticky;
   position: sticky;
 }
 
@@ -8241,6 +8240,10 @@ body {
 
 .focus\:text-opaque70:focus {
   color: rgba(0, 0, 0, 0.7);
+}
+
+.text-xxs {
+  font-size: 0.55rem;
 }
 
 .text-xs {
@@ -17224,7 +17227,6 @@ body {
   }
 
   .xs\:sticky {
-    position: -webkit-sticky;
     position: sticky;
   }
 
@@ -18699,6 +18701,10 @@ body {
 
   .xs\:focus\:text-opaque70:focus {
     color: rgba(0, 0, 0, 0.7);
+  }
+
+  .xs\:text-xxs {
+    font-size: 0.55rem;
   }
 
   .xs\:text-xs {
@@ -27679,7 +27685,6 @@ body {
   }
 
   .sm\:sticky {
-    position: -webkit-sticky;
     position: sticky;
   }
 
@@ -29154,6 +29159,10 @@ body {
 
   .sm\:focus\:text-opaque70:focus {
     color: rgba(0, 0, 0, 0.7);
+  }
+
+  .sm\:text-xxs {
+    font-size: 0.55rem;
   }
 
   .sm\:text-xs {
@@ -38134,7 +38143,6 @@ body {
   }
 
   .md\:sticky {
-    position: -webkit-sticky;
     position: sticky;
   }
 
@@ -39609,6 +39617,10 @@ body {
 
   .md\:focus\:text-opaque70:focus {
     color: rgba(0, 0, 0, 0.7);
+  }
+
+  .md\:text-xxs {
+    font-size: 0.55rem;
   }
 
   .md\:text-xs {
@@ -48589,7 +48601,6 @@ body {
   }
 
   .lg\:sticky {
-    position: -webkit-sticky;
     position: sticky;
   }
 
@@ -50064,6 +50075,10 @@ body {
 
   .lg\:focus\:text-opaque70:focus {
     color: rgba(0, 0, 0, 0.7);
+  }
+
+  .lg\:text-xxs {
+    font-size: 0.55rem;
   }
 
   .lg\:text-xs {
@@ -59044,7 +59059,6 @@ body {
   }
 
   .xl\:sticky {
-    position: -webkit-sticky;
     position: sticky;
   }
 
@@ -60519,6 +60533,10 @@ body {
 
   .xl\:focus\:text-opaque70:focus {
     color: rgba(0, 0, 0, 0.7);
+  }
+
+  .xl\:text-xxs {
+    font-size: 0.55rem;
   }
 
   .xl\:text-xs {
