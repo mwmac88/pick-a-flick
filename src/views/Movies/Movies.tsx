@@ -138,8 +138,6 @@ const Movies: React.FC<CardsViewProps> = ({
         />
       </SidePanel>
       <div className='container mx-auto xs:px-4 sm:px-3 md:px-2'>
-        <p>UrlParams: {Object.entries(urlParams).map((val) => `${val} &`)}</p>
-
         <Suspense fallback={<Loader isLoading={isLoading} />}>
           <CardsView movies={movies} />
         </Suspense>

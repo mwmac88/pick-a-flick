@@ -37,14 +37,6 @@ const App: React.FC = () => {
             Pick-A-Flick
           </h1>
         </Link>
-        <div className='flex flex-auto justify-end'>
-          <Link to='/login' className='mr-4'>
-            <PersonIcon fontSize='large' className='cursor-pointer' />
-          </Link>
-          <Link to='/register'>
-            <PersonAddIcon fontSize='large' className='cursor-pointer' />
-          </Link>
-        </div>
       </header>
       <main>
         <Router>
