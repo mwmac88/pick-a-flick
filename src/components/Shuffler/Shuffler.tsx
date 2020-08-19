@@ -10,7 +10,7 @@ import useGenres from '../../utils/use-genres';
 import { getRandomMovieFromList, getRandomNum } from '../../utils/helpers';
 import { Genre, Movie } from '../../types';
 
-import "react-datepicker/dist/react-datepicker.css";
+import 'react-datepicker/dist/react-datepicker.css';
 
 interface Props {
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -36,25 +36,33 @@ const Shuffler: React.FC<Props> = ({ setModalVisible }) => {
       sort_by: 'popularity.desc',
       'primary_release_date.gte': format(yearFrom, 'yyyy-dd-MM'),
       'vote_average.gte': '7',
-      'vote_count.gte': '150'
+      'vote_count.gte': '150',
     };
 
     const genreResults = async () => {
       const initialMovieList = await apiCall.getMovies(options);
 
       if (initialMovieList.data.total_results === 0) {
-        setNoResults(true)
+        setNoResults(true);
       } else {
         setNoResults(false);
         const totalPages = initialMovieList.data.total_pages;
 
-        const randompageNum = totalPages === 1 ? 1 : getRandomNum(
-          isOnlyPopular ? 3 : initialMovieList.data.total_pages
+        const randompageNum =
+          totalPages === 1
+            ? 1
+            : getRandomNum(
+                isOnlyPopular ? 3 : initialMovieList.data.total_pages
+              );
+
+        const randompageMovieList = await apiCall.getMovies(
+          options,
+          randompageNum
         );
-      
-        const randompageMovieList = await apiCall.getMovies(options, randompageNum);
-  
-        setMovieResult(getRandomMovieFromList(randompageMovieList.data.results));
+
+        setMovieResult(
+          getRandomMovieFromList(randompageMovieList.data.results)
+        );
       }
     };
     genreResults();
@@ -97,7 +105,12 @@ const Shuffler: React.FC<Props> = ({ setModalVisible }) => {
       <h2>Movie Roulette</h2>
 
       {radioSelected.id && (
-        <h3>Selected Genre: <span className='text-green-400 font-semibold'>{radioSelected.name}</span></h3>
+        <h3>
+          Selected Genre:{' '}
+          <span className='text-green-400 font-semibold'>
+            {radioSelected.name}
+          </span>
+        </h3>
       )}
 
       <label>Year from: </label>
@@ -106,20 +119,26 @@ const Shuffler: React.FC<Props> = ({ setModalVisible }) => {
         selected={yearFrom}
         onChange={(date: Date) => setYearFrom(date)}
         showYearPicker
-        dateFormat="yyyy"
+        dateFormat='yyyy'
       />
-      
-      <div className="divide-y-2 divide-orange-400"></div>
 
-      <label>Show only popular:</label><input type='checkbox' checked={isOnlyPopular} onChange={() => setIsOnlyPopular(!isOnlyPopular)}/>
+      <div className='divide-y-2 divide-orange-400'></div>
 
-      {noResults && (
-        <p>No Flicks Found. Try again!</p>
-      )}
+      <label>Show only popular:</label>
+      <input
+        type='checkbox'
+        checked={isOnlyPopular}
+        onChange={() => setIsOnlyPopular(!isOnlyPopular)}
+      />
+
+      {noResults && <p>No Flicks Found. Try again!</p>}
 
       {movieResult && Object.keys(movieResult).length === 0 && (
         <>
-          <form className='grid grid-cols-4 gap-3 my-8' onSubmit={handleSubmit}>
+          <form
+            className='grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-3 my-8'
+            onSubmit={handleSubmit}
+          >
             {renderRadios(genres)}
           </form>
           <button
@@ -139,7 +158,7 @@ const Shuffler: React.FC<Props> = ({ setModalVisible }) => {
       {!noResults && movieResult && movieResult.id && (
         <>
           <h3>Your Selected Random Movie Is:</h3>
-          <div className='w-2/3 grid xs:grid-cols-1 sm:grid-cols-2 col-gap-12 py-4 mx-auto'>
+          <div className='grid xs:grid-cols-1 sm:grid-cols-2 col-gap-12 w-full md:w-2/3 py-4 mx-auto'>
             <Link
               to={`/movie/${movieResult.id}`}
               onClick={() => setModalVisible(false)}
@@ -149,7 +168,7 @@ const Shuffler: React.FC<Props> = ({ setModalVisible }) => {
             <div className='flex flex-col my-auto'>
               <button
                 className={
-                  'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex-1 mb-8'
+                  'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex-1 my-4 md:my-0 md:mb-8'
                 }
                 onClick={() => getRandomMovieResult()}
               >
