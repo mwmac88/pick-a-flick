@@ -4,6 +4,7 @@ import { stringify } from 'query-string';
 import { navigate } from '@reach/router';
 
 import Loader from '../../components/Loader/Loader';
+import Search from '../../components/Search/Search';
 import SidePanel from '../../components/SidePanel/SidePanel';
 
 import FiltersView from '../FiltersView/FiltersView';
@@ -87,9 +88,15 @@ const Movies: React.FC<CardsViewProps> = ({ isSidePanelOpen }) => {
     navigate(sortByParam);
   };
 
+  const searchMovies = async (searchTerm: string) => {
+    const apiCall = new api();
+    let results = await apiCall.getSearchResults(searchTerm);
+  };
+
   return (
     <>
       <div className='sticky top-0 flex justify-center items-center bg-gray-700 py-4 z-20'>
+        <Search searchInputChange={searchMovies} />
         <button
           className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4'
           onClick={() => appDispatch(AppActionTypes.TOGGLE_SIDEPANEL)}

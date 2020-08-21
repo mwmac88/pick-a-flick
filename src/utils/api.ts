@@ -26,6 +26,12 @@ export default class api {
     );
   }
 
+  async getSearchResults(searchQuery: string, pageNumber = 1) {
+    return axios(
+      `https://${process.env.REACT_APP_TMDB_URL}/search/movie?query=${searchQuery}&page=${pageNumber}&language=en-UK&include_adult=false&api_key=${process.env.REACT_APP_TMDB_APIKEY}`
+    );
+  }
+
   async getMovies(
     urlParams: ParsedQuery,
     pageNumber: number = 1
