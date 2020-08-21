@@ -20,10 +20,10 @@ const App: React.FC = () => {
   const [sidePanelVisible, setSidePanelVisible] = useState(false);
 
   useEffect(() => {
-    sidePanelVisible
+    sidePanelVisible || modalVisible
       ? document.body.classList.add('overflow-y-hidden')
       : document.body.classList.remove('overflow-y-hidden');
-  }, [sidePanelVisible]);
+  }, [sidePanelVisible, modalVisible]);
 
   return (
     <ProvideAuth>
