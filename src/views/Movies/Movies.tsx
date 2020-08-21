@@ -14,6 +14,7 @@ import useUrlParams from '../../utils/use-urlparams';
 import { useGlobalWindowScroll } from '../../utils/use-window-event';
 
 import { Movie, SortBy } from '../../types';
+import Search from '../../components/Search/Search';
 
 const CardsView = lazy(() => import('../CardsView/CardsView'));
 
@@ -31,6 +32,7 @@ const Movies: React.FC<CardsViewProps> = ({
   const [movies, setMovies] = useState<Movie[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchResults, setSearchResults] = useState<Movie[]>([]);
 
   useGlobalWindowScroll(
     debounce(() => {
@@ -63,6 +65,10 @@ const Movies: React.FC<CardsViewProps> = ({
     fetchData();
   }, [urlParams, pageNumber]);
 
+  useEffect(() => {
+    setMovies(searchResults);
+  }, [searchResults]);
+
   const loadMoreMovies = () => {
     setPageNumber(pageNumber + 1);
   };
@@ -82,9 +88,18 @@ const Movies: React.FC<CardsViewProps> = ({
     navigate(sortByParam);
   };
 
+  const searchMovies = async (searchTerm: string) => {
+    const apiCall = new api();
+    let results = await apiCall.getSearchResults(searchTerm);
+
+    refreshMovies();
+    setSearchResults(results.data.results);
+  };
+
   return (
     <>
       <div className='sticky top-0 flex justify-center items-center bg-gray-700 py-4 z-20'>
+        <Search searchInputChange={searchMovies} />
         <button
           className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4'
           onClick={() => setSidePanelVisible(true)}
