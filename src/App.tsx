@@ -15,6 +15,8 @@ import MovieView from './views/MovieView/MovieView';
 
 import ShuffleIcon from '@material-ui/icons/Shuffle';
 
+import { MoviesProvider } from './contexts/MoviesContext';
+
 const App: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [sidePanelVisible, setSidePanelVisible] = useState(false);
@@ -35,20 +37,23 @@ const App: React.FC = () => {
         </Link>
       </header>
       <main>
-        <Router>
-          <Movies
-            path='/'
-            isSidePanelOpen={sidePanelVisible}
-            setSidePanelVisible={setSidePanelVisible}
-          />
-          <Movies
-            path='/movies'
-            isSidePanelOpen={sidePanelVisible}
-            setSidePanelVisible={setSidePanelVisible}
-          />
-          <MovieView path='movie/:movieId' movieId={0} />
-          <Login path='/login' />
-        </Router>
+        <MoviesProvider>
+          <Router>
+            <Movies
+              path='/'
+              isSidePanelOpen={sidePanelVisible}
+              setSidePanelVisible={setSidePanelVisible}
+            />
+            <Movies
+              path='/movies'
+              isSidePanelOpen={sidePanelVisible}
+              setSidePanelVisible={setSidePanelVisible}
+            />
+            <MovieView path='movie/:movieId' movieId={0} />
+            <Login path='/login' />
+          </Router>
+        </MoviesProvider>
+
         <div className='fixed bottom-8 right-8 flex justify-center items-center'>
           <span
             onClick={() => setModalVisible(!modalVisible)}

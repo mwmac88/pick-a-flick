@@ -9,11 +9,13 @@ import SidePanel from '../../components/SidePanel/SidePanel';
 import FiltersView from '../FiltersView/FiltersView';
 
 import api from '../../utils/api';
-import { deduplicateMovies, genresListIds } from '../../utils/helpers';
+import { genresListIds } from '../../utils/helpers';
 import useUrlParams from '../../utils/use-urlparams';
 import { useGlobalWindowScroll } from '../../utils/use-window-event';
 
-import { Movie, SortBy } from '../../types';
+import { MoviesStatus, SortBy } from '../../types';
+
+import { useMovieState, useMoviesDispatch } from '../../contexts/MoviesContext';
 
 const CardsView = lazy(() => import('../CardsView/CardsView'));
 
@@ -28,9 +30,10 @@ const Movies: React.FC<CardsViewProps> = ({
   setSidePanelVisible,
 }) => {
   const urlParams = useUrlParams();
-  const [movies, setMovies] = useState<Movie[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
+  const { movies, status, error } = useMovieState();
+
+  const dispatch = useMoviesDispatch();
 
   useGlobalWindowScroll(
     debounce(() => {
@@ -48,27 +51,31 @@ const Movies: React.FC<CardsViewProps> = ({
 
     async function fetchData() {
       try {
+        dispatch({
+          type: 'fetching',
+        });
         let top20 = await apiCall.getMovies({ ...urlParams }, pageNumber);
 
-        if (pageNumber > 1) {
-          setMovies((m) => deduplicateMovies([...m, ...top20.data.results]));
-        } else {
-          setMovies(() => deduplicateMovies([...top20.data.results]));
-        }
-      } finally {
-        setIsLoading(false);
+        dispatch({
+          type: 'success',
+          payload: [...top20.data.results],
+        });
+      } catch (error) {
+        dispatch({
+          type: 'error',
+          error,
+        });
       }
     }
 
     fetchData();
-  }, [urlParams, pageNumber]);
+  }, [urlParams, pageNumber, dispatch]);
 
   const loadMoreMovies = () => {
     setPageNumber(pageNumber + 1);
   };
 
   const refreshMovies = () => {
-    setIsLoading(true);
     setSidePanelVisible(false);
     setPageNumber(1);
   };
@@ -138,7 +145,15 @@ const Movies: React.FC<CardsViewProps> = ({
         />
       </SidePanel>
       <div className='container mx-auto xs:px-4 sm:px-3 md:px-2'>
-        <Suspense fallback={<Loader isLoading={isLoading} />}>
+        {status === MoviesStatus.ERROR && (
+          <>
+            <h1>An error has occured, please try refreshing the page</h1>
+            <p>{error.toString()}</p>
+          </>
+        )}
+        <Suspense
+          fallback={<Loader isLoading={status === MoviesStatus.FETCHING} />}
+        >
           <CardsView movies={movies} />
         </Suspense>
       </div>

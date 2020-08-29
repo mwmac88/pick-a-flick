@@ -11,6 +11,23 @@ export interface Movie {
   release_date: string;
 }
 
+export enum MoviesStatus {
+  FETCHING = 'fetching',
+  SUCCESS = 'success',
+  ERROR = 'error',
+}
+
+export type MoviesAction =
+  | { type: 'fetching' }
+  | { type: 'success'; payload: Movie[] }
+  | { type: 'error'; error: Error };
+
+export type MoviesState = {
+  movies: Movie[];
+  status: MoviesStatus;
+  error: string;
+};
+
 export interface MovieDetails {
   backdrop_path: string;
   genres: Array<Genre>;
