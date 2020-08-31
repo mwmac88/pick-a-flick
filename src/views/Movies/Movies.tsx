@@ -13,27 +13,25 @@ import { genresListIds } from '../../utils/helpers';
 import useUrlParams from '../../utils/use-urlparams';
 import { useGlobalWindowScroll } from '../../utils/use-window-event';
 
-import { MoviesStatus, SortBy } from '../../types';
+import { AppActionTypes, MoviesStatus, SortBy } from '../../types';
 
 import { useMovieState, useMoviesDispatch } from '../../contexts/MoviesContext';
+import { useAppDispatch } from '../../contexts/AppContext';
 
 const CardsView = lazy(() => import('../CardsView/CardsView'));
 
 interface CardsViewProps {
   path: string;
   isSidePanelOpen: boolean;
-  setSidePanelVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Movies: React.FC<CardsViewProps> = ({
-  isSidePanelOpen,
-  setSidePanelVisible,
-}) => {
+const Movies: React.FC<CardsViewProps> = ({ isSidePanelOpen }) => {
   const urlParams = useUrlParams();
   const [pageNumber, setPageNumber] = useState(1);
   const { movies, status, error } = useMovieState();
 
-  const dispatch = useMoviesDispatch();
+  const appDispatch = useAppDispatch();
+  const moviesDispatch = useMoviesDispatch();
 
   useGlobalWindowScroll(
     debounce(() => {
@@ -51,17 +49,17 @@ const Movies: React.FC<CardsViewProps> = ({
 
     async function fetchData() {
       try {
-        dispatch({
+        moviesDispatch({
           type: 'fetching',
         });
         let top20 = await apiCall.getMovies({ ...urlParams }, pageNumber);
 
-        dispatch({
+        moviesDispatch({
           type: 'success',
           payload: [...top20.data.results],
         });
       } catch (error) {
-        dispatch({
+        moviesDispatch({
           type: 'error',
           error,
         });
@@ -69,14 +67,14 @@ const Movies: React.FC<CardsViewProps> = ({
     }
 
     fetchData();
-  }, [urlParams, pageNumber, dispatch]);
+  }, [urlParams, pageNumber, moviesDispatch]);
 
   const loadMoreMovies = () => {
     setPageNumber(pageNumber + 1);
   };
 
   const refreshMovies = () => {
-    setSidePanelVisible(false);
+    appDispatch(AppActionTypes.TOGGLE_SIDEPANEL);
     setPageNumber(1);
   };
 
@@ -94,7 +92,7 @@ const Movies: React.FC<CardsViewProps> = ({
       <div className='sticky top-0 flex justify-center items-center bg-gray-700 py-4 z-20'>
         <button
           className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4'
-          onClick={() => setSidePanelVisible(true)}
+          onClick={() => appDispatch(AppActionTypes.TOGGLE_SIDEPANEL)}
         >
           Filter
         </button>
@@ -132,7 +130,7 @@ const Movies: React.FC<CardsViewProps> = ({
       </div>
       <SidePanel
         isSidePanelOpen={isSidePanelOpen}
-        closeSidePanel={() => setSidePanelVisible(false)}
+        closeSidePanel={() => appDispatch(AppActionTypes.TOGGLE_SIDEPANEL)}
       >
         <FiltersView
           selectedGenres={genresListIds(urlParams.with_genres)}

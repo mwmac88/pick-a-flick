@@ -1,7 +1,21 @@
-import { MoviesAction, MoviesState, MoviesStatus } from '../types';
+import { Movie, MoviesStatus } from '../types';
 import { deduplicateMovies } from '../utils/helpers';
 
-function moviesReducer(state: MoviesState, action: MoviesAction): MoviesState {
+export type MoviesActions =
+  | { type: 'fetching' }
+  | { type: 'success'; payload: Movie[] }
+  | { type: 'error'; error: Error };
+
+export type MoviesState = {
+  movies: Movie[];
+  status: MoviesStatus;
+  error: string;
+};
+
+export function moviesReducer(
+  state: MoviesState,
+  action: MoviesActions
+): MoviesState {
   switch (action.type) {
     case 'fetching': {
       return { ...state, status: MoviesStatus.FETCHING, error: '' };
@@ -26,5 +40,3 @@ function moviesReducer(state: MoviesState, action: MoviesAction): MoviesState {
     }
   }
 }
-
-export default moviesReducer;

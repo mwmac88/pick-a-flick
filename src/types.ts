@@ -17,17 +17,6 @@ export enum MoviesStatus {
   ERROR = 'error',
 }
 
-export type MoviesAction =
-  | { type: 'fetching' }
-  | { type: 'success'; payload: Movie[] }
-  | { type: 'error'; error: Error };
-
-export type MoviesState = {
-  movies: Movie[];
-  status: MoviesStatus;
-  error: string;
-};
-
 export interface MovieDetails {
   backdrop_path: string;
   genres: Array<Genre>;
@@ -69,3 +58,8 @@ export type APIResults = {
   total_pages: number;
   results: Movie[];
 };
+
+export enum AppActionTypes {
+  TOGGLE_SIDEPANEL = 'togglesidepanel',
+  TOGGLE_MODAL = 'togglemodal',
+}

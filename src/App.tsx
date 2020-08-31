@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Router, Link } from '@reach/router';
 import 'firebase/firestore';
 
@@ -15,17 +15,19 @@ import MovieView from './views/MovieView/MovieView';
 
 import ShuffleIcon from '@material-ui/icons/Shuffle';
 
+import { useAppDispatch, useAppState } from './contexts/AppContext';
 import { MoviesProvider } from './contexts/MoviesContext';
+import { AppActionTypes } from './types';
 
 const App: React.FC = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [sidePanelVisible, setSidePanelVisible] = useState(false);
+  const appDispatch = useAppDispatch();
+  const { isModalVisible, isSidePanelOpen } = useAppState();
 
   useEffect(() => {
-    sidePanelVisible || modalVisible
+    isSidePanelOpen || isModalVisible
       ? document.body.classList.add('overflow-y-hidden')
       : document.body.classList.remove('overflow-y-hidden');
-  }, [sidePanelVisible, modalVisible]);
+  }, [isSidePanelOpen, isModalVisible]);
 
   return (
     <ProvideAuth>
@@ -39,16 +41,8 @@ const App: React.FC = () => {
       <main>
         <MoviesProvider>
           <Router>
-            <Movies
-              path='/'
-              isSidePanelOpen={sidePanelVisible}
-              setSidePanelVisible={setSidePanelVisible}
-            />
-            <Movies
-              path='/movies'
-              isSidePanelOpen={sidePanelVisible}
-              setSidePanelVisible={setSidePanelVisible}
-            />
+            <Movies path='/' isSidePanelOpen={isSidePanelOpen} />
+            <Movies path='/movies' isSidePanelOpen={isSidePanelOpen} />
             <MovieView path='movie/:movieId' movieId={0} />
             <Login path='/login' />
           </Router>
@@ -56,7 +50,7 @@ const App: React.FC = () => {
 
         <div className='fixed bottom-8 right-8 flex justify-center items-center'>
           <span
-            onClick={() => setModalVisible(!modalVisible)}
+            onClick={() => appDispatch(AppActionTypes.TOGGLE_MODAL)}
             className='h-20 rounded-full bg-orange-500 text-center font-bold text-white p-4 leading-snug hover:bg-orange-600 cursor-pointer transform transition-transform hover:scale-125 duration-300 ease-in-out'
           >
             <ShuffleIcon
@@ -65,9 +59,13 @@ const App: React.FC = () => {
             />
           </span>
         </div>
-        {modalVisible && (
-          <Modal setModalVisible={setModalVisible}>
-            <Shuffler setModalVisible={setModalVisible} />
+        {isModalVisible && (
+          <Modal
+            setModalVisibilty={() => appDispatch(AppActionTypes.TOGGLE_MODAL)}
+          >
+            <Shuffler
+              setModalVisibilty={() => appDispatch(AppActionTypes.TOGGLE_MODAL)}
+            />
           </Modal>
         )}
       </main>

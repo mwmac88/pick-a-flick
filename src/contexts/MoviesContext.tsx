@@ -1,8 +1,12 @@
 import React, { createContext, useReducer } from 'react';
-import moviesReducer from '../reducers/moviesReducer';
-import { MoviesState, MoviesAction, MoviesStatus } from '../types';
+import {
+  MoviesState,
+  MoviesActions,
+  moviesReducer,
+} from '../reducers/moviesReducer';
+import { MoviesStatus } from '../types';
 
-type Dispatch = (action: MoviesAction) => void;
+type Dispatch = (action: MoviesActions) => void;
 
 const defaultMovieStatus = {
   movies: [],
@@ -28,7 +32,7 @@ function MoviesProvider({ children }: any) {
 function useMovieState() {
   const context = React.useContext(MoviesStateContext);
   if (context === undefined) {
-    throw new Error('MoviesStateContext must be used within a MoviesProvider');
+    throw new Error('useMovieState must be used within a MoviesProvider');
   }
 
   return context;
@@ -37,7 +41,7 @@ function useMovieState() {
 function useMoviesDispatch() {
   const context = React.useContext(MoviesDispatchContext);
   if (context === undefined) {
-    throw new Error('useCountDispatch must be used within a CountProvider');
+    throw new Error('useMoviesDispatch must be used within a MoviesProvider');
   }
 
   return context;
