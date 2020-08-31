@@ -13,10 +13,10 @@ import { Genre, Movie } from '../../types';
 import 'react-datepicker/dist/react-datepicker.css';
 
 interface Props {
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setModalVisibilty: Function;
 }
 
-const Shuffler: React.FC<Props> = ({ setModalVisible }) => {
+const Shuffler: React.FC<Props> = ({ setModalVisibilty }) => {
   const [radioSelected, setRadioSelected] = useState({} as Genre);
   const [yearFrom, setYearFrom] = useState(startOfYear(new Date()));
   const [isOnlyPopular, setIsOnlyPopular] = useState(false);
@@ -161,7 +161,7 @@ const Shuffler: React.FC<Props> = ({ setModalVisible }) => {
           <div className='grid xs:grid-cols-1 sm:grid-cols-2 col-gap-12 w-full md:w-2/3 py-4 mx-auto'>
             <Link
               to={`/movie/${movieResult.id}`}
-              onClick={() => setModalVisible(false)}
+              onClick={() => setModalVisibilty()}
             >
               <Card movie={movieResult} />
             </Link>

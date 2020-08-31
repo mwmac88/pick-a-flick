@@ -8,16 +8,16 @@ const ModalInner = styled.div`
 `;
 
 interface Props {
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setModalVisibilty: Function;
   children: React.ReactNode;
 }
 
-const Modal: React.FC<Props> = ({ children, setModalVisible }) => (
+const Modal: React.FC<Props> = ({ children, setModalVisibilty }) => (
   <div className='absolute flex justify-center items-center top-0 left-0 w-screen h-screen bg-opaque70 overflow-x-scroll z-20'>
     <ModalInner className='fixed bg-white w-full h-full mx-auto overflow-auto'>
       <div className='text-center'>{children}</div>
       <CloseIcon
-        onClick={() => setModalVisible(false)}
+        onClick={() => setModalVisibilty()}
         className='absolute top-2 right-2 cursor-pointer'
         fontSize='large'
       />

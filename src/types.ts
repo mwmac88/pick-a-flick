@@ -11,6 +11,12 @@ export interface Movie {
   release_date: string;
 }
 
+export enum MoviesStatus {
+  FETCHING = 'fetching',
+  SUCCESS = 'success',
+  ERROR = 'error',
+}
+
 export interface MovieDetails {
   backdrop_path: string;
   genres: Array<Genre>;
@@ -52,3 +58,8 @@ export type APIResults = {
   total_pages: number;
   results: Movie[];
 };
+
+export enum AppActionTypes {
+  TOGGLE_SIDEPANEL = 'togglesidepanel',
+  TOGGLE_MODAL = 'togglemodal',
+}
