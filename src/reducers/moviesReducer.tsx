@@ -3,7 +3,7 @@ import { deduplicateMovies } from '../utils/helpers';
 
 export type MoviesActions =
   | { type: 'fetching' }
-  | { type: 'success'; payload: Movie[] }
+  | { type: 'success'; payload: { results: Movie[]; page: number } }
   | { type: 'error'; error: Error };
 
 export type MoviesState = {
@@ -21,10 +21,14 @@ export function moviesReducer(
       return { ...state, status: MoviesStatus.FETCHING, error: '' };
     }
     case 'success': {
-      const dedupedMovies = deduplicateMovies(action.payload);
+      const { results, page } = action.payload;
+      const dedupedMovies = deduplicateMovies(results);
+      const movies =
+        page > 1 ? [...state.movies, ...dedupedMovies] : [...dedupedMovies];
+
       return {
         status: MoviesStatus.SUCCESS,
-        movies: [...state.movies, ...dedupedMovies],
+        movies,
         error: '',
       };
     }

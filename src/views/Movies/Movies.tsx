@@ -56,7 +56,7 @@ const Movies: React.FC<CardsViewProps> = ({ isSidePanelOpen }) => {
 
         moviesDispatch({
           type: 'success',
-          payload: [...top20.data.results],
+          payload: { results: [...top20.data.results], page: pageNumber },
         });
       } catch (error) {
         moviesDispatch({
