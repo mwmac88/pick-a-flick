@@ -4,13 +4,13 @@ import {
   MoviesActions,
   moviesReducer,
 } from '../reducers/moviesReducer';
-import { MoviesStatus } from '../types';
+import { Status } from '../types';
 
 type Dispatch = (action: MoviesActions) => void;
 
-const defaultMovieStatus = {
+const defaultMovieStatus: MoviesState = {
   movies: [],
-  status: MoviesStatus.FETCHING,
+  status: Status.FETCHING,
   error: '',
 };
 

@@ -1,12 +1,19 @@
-import { AppActionTypes } from '../types';
-
 export type AppState = {
+  searchInput: string;
   isSidePanelOpen: boolean;
   isModalVisible: boolean;
 };
 
-export function appReducer(state: AppState, action: AppActionTypes): AppState {
-  switch (action) {
+export type AppActions =
+  | { type: 'searchterm'; payload: string }
+  | { type: 'togglemodal' }
+  | { type: 'togglesidepanel' };
+
+export function appReducer(state: AppState, action: AppActions): AppState {
+  switch (action.type) {
+    case 'searchterm': {
+      return { ...state, searchInput: action.payload };
+    }
     case 'togglesidepanel': {
       return { ...state, isSidePanelOpen: !state.isSidePanelOpen };
     }

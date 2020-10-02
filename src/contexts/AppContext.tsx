@@ -1,10 +1,10 @@
 import React, { createContext, useReducer } from 'react';
-import { AppState, appReducer } from '../reducers/appReducer';
-import { AppActionTypes } from '../types';
+import { AppState, appReducer, AppActions } from '../reducers/appReducer';
 
-type Dispatch = (action: AppActionTypes) => void;
+type Dispatch = (action: AppActions) => void;
 
 const defaultAppStatus = {
+  searchInput: '',
   isSidePanelOpen: false,
   isModalVisible: false,
 };

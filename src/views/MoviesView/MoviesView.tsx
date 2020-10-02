@@ -4,7 +4,6 @@ import { stringify } from 'query-string';
 import { navigate } from '@reach/router';
 
 import Loader from '../../components/Loader/Loader';
-import Search from '../../components/Search/Search';
 import SidePanel from '../../components/SidePanel/SidePanel';
 
 import FiltersView from '../FiltersView/FiltersView';
@@ -14,19 +13,19 @@ import { genresListIds } from '../../utils/helpers';
 import useUrlParams from '../../utils/use-urlparams';
 import { useGlobalWindowScroll } from '../../utils/use-window-event';
 
-import { AppActionTypes, MoviesStatus, SortBy } from '../../types';
+import { Status, SortBy } from '../../types';
 
 import { useMovieState, useMoviesDispatch } from '../../contexts/MoviesContext';
 import { useAppDispatch } from '../../contexts/AppContext';
 
 const CardsView = lazy(() => import('../CardsView/CardsView'));
 
-interface CardsViewProps {
+interface MoviesProps {
   path: string;
   isSidePanelOpen: boolean;
 }
 
-const Movies: React.FC<CardsViewProps> = ({ isSidePanelOpen }) => {
+const MoviesView: React.FC<MoviesProps> = ({ isSidePanelOpen }) => {
   const urlParams = useUrlParams();
   const [pageNumber, setPageNumber] = useState(1);
   const { movies, status, error } = useMovieState();
@@ -75,7 +74,7 @@ const Movies: React.FC<CardsViewProps> = ({ isSidePanelOpen }) => {
   };
 
   const refreshMovies = () => {
-    appDispatch(AppActionTypes.TOGGLE_SIDEPANEL);
+    appDispatch({ type: 'togglesidepanel' });
     setPageNumber(1);
   };
 
@@ -88,18 +87,12 @@ const Movies: React.FC<CardsViewProps> = ({ isSidePanelOpen }) => {
     navigate(sortByParam);
   };
 
-  const searchMovies = async (searchTerm: string) => {
-    const apiCall = new api();
-    let results = await apiCall.getSearchResults(searchTerm);
-  };
-
   return (
     <>
       <div className='sticky top-0 flex justify-center items-center bg-gray-700 py-4 z-20'>
-        <Search searchInputChange={searchMovies} />
         <button
           className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4'
-          onClick={() => appDispatch(AppActionTypes.TOGGLE_SIDEPANEL)}
+          onClick={() => appDispatch({ type: 'togglesidepanel' })}
         >
           Filter
         </button>
@@ -119,7 +112,12 @@ const Movies: React.FC<CardsViewProps> = ({ isSidePanelOpen }) => {
             }}
           >
             {Object.entries(SortBy).map(([name, value]) => (
-              <option value={name} selected={value === urlParams.sort_by}>
+              <option
+                value={name}
+                defaultValue={SortBy['Popularity Desc']}
+                selected={value === urlParams.sort_by}
+                key={value}
+              >
                 {name}
               </option>
             ))}
@@ -137,7 +135,7 @@ const Movies: React.FC<CardsViewProps> = ({ isSidePanelOpen }) => {
       </div>
       <SidePanel
         isSidePanelOpen={isSidePanelOpen}
-        closeSidePanel={() => appDispatch(AppActionTypes.TOGGLE_SIDEPANEL)}
+        closeSidePanel={() => appDispatch({ type: 'togglesidepanel' })}
       >
         <FiltersView
           selectedGenres={genresListIds(urlParams.with_genres)}
@@ -150,15 +148,13 @@ const Movies: React.FC<CardsViewProps> = ({ isSidePanelOpen }) => {
         />
       </SidePanel>
       <div className='container mx-auto xs:px-4 sm:px-3 md:px-2'>
-        {status === MoviesStatus.ERROR && (
+        {status === Status.ERROR && (
           <>
             <h1>An error has occured, please try refreshing the page</h1>
             <p>{error.toString()}</p>
           </>
         )}
-        <Suspense
-          fallback={<Loader isLoading={status === MoviesStatus.FETCHING} />}
-        >
+        <Suspense fallback={<Loader isLoading={status === Status.FETCHING} />}>
           <CardsView movies={movies} />
         </Suspense>
       </div>
@@ -166,4 +162,4 @@ const Movies: React.FC<CardsViewProps> = ({ isSidePanelOpen }) => {
   );
 };
 
-export default Movies;
+export default MoviesView;

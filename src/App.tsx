@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Router, Link } from '@reach/router';
+import { Router, Link, navigate } from '@reach/router';
 import 'firebase/firestore';
 
 import { ReactComponent as TMDBLogo } from './images/tmdblogo.svg';
@@ -8,20 +8,31 @@ import { ProvideAuth } from './utils/use-auth.js';
 
 import Modal from './components/Modal/Modal';
 import Shuffler from './components/Shuffler/Shuffler';
-import Login from './components/Auth/Login';
+// import Login from './components/Auth/Login';
 
-import Movies from './views/Movies/Movies';
+import MoviesView from './views/MoviesView/MoviesView';
 import MovieView from './views/MovieView/MovieView';
 
 import ShuffleIcon from '@material-ui/icons/Shuffle';
 
 import { useAppDispatch, useAppState } from './contexts/AppContext';
 import { MoviesProvider } from './contexts/MoviesContext';
-import { AppActionTypes } from './types';
+import { SearchProvider } from './contexts/SearchContext';
+
+import Search from './components/Search/Search';
+import SearchView from './views/SearchView/SearchView';
 
 const App: React.FC = () => {
   const appDispatch = useAppDispatch();
-  const { isModalVisible, isSidePanelOpen } = useAppState();
+  const { isModalVisible, isSidePanelOpen, searchInput } = useAppState();
+
+  useEffect(() => {
+    const isSearchPage = window.location.pathname.startsWith('/search');
+
+    if (!isSearchPage && searchInput.length > 0) {
+      navigate(`/search`);
+    }
+  }, [searchInput]);
 
   useEffect(() => {
     isSidePanelOpen || isModalVisible
@@ -37,20 +48,25 @@ const App: React.FC = () => {
             Pick-A-Flick
           </h1>
         </Link>
+        <Search />
       </header>
       <main>
         <MoviesProvider>
           <Router>
-            <Movies path='/' isSidePanelOpen={isSidePanelOpen} />
-            <Movies path='/movies' isSidePanelOpen={isSidePanelOpen} />
+            <MoviesView path='/' isSidePanelOpen={isSidePanelOpen} />
+            <MoviesView path='/movies' isSidePanelOpen={isSidePanelOpen} />
             <MovieView path='movie/:movieId' movieId={0} />
-            <Login path='/login' />
+            {/* <Login path='/login' /> */}
           </Router>
         </MoviesProvider>
-
+        <SearchProvider>
+          <Router>
+            <SearchView path='/search' isSidePanelOpen={isSidePanelOpen} />
+          </Router>
+        </SearchProvider>
         <div className='fixed bottom-8 right-8 flex justify-center items-center'>
           <span
-            onClick={() => appDispatch(AppActionTypes.TOGGLE_MODAL)}
+            onClick={() => appDispatch({ type: 'togglemodal' })}
             className='h-20 rounded-full bg-orange-500 text-center font-bold text-white p-4 leading-snug hover:bg-orange-600 cursor-pointer transform transition-transform hover:scale-125 duration-300 ease-in-out'
           >
             <ShuffleIcon
@@ -60,11 +76,9 @@ const App: React.FC = () => {
           </span>
         </div>
         {isModalVisible && (
-          <Modal
-            setModalVisibilty={() => appDispatch(AppActionTypes.TOGGLE_MODAL)}
-          >
+          <Modal setModalVisibilty={() => appDispatch({ type: 'togglemodal' })}>
             <Shuffler
-              setModalVisibilty={() => appDispatch(AppActionTypes.TOGGLE_MODAL)}
+              setModalVisibilty={() => appDispatch({ type: 'togglemodal' })}
             />
           </Modal>
         )}

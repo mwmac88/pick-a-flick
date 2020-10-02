@@ -1,34 +1,33 @@
 import { Movie, Status } from '../types';
-import { deduplicateMovies } from '../utils/helpers';
 
-export type MoviesActions =
+export type SearchActions =
   | { type: 'fetching' }
   | { type: 'success'; payload: { results: Movie[]; page: number } }
-  | { type: 'error'; error: Error };
+  | { type: 'error'; error: Error }
+  | { type: 'clear' };
 
-export type MoviesState = {
-  movies: Movie[];
+export type SearchState = {
+  searchResults: Movie[];
   status: Status;
   error: string;
 };
 
-export function moviesReducer(
-  state: MoviesState,
-  action: MoviesActions
-): MoviesState {
+export function searchReducer(
+  state: SearchState,
+  action: SearchActions
+): SearchState {
   switch (action.type) {
     case 'fetching': {
       return { ...state, status: Status.FETCHING, error: '' };
     }
     case 'success': {
       const { results, page } = action.payload;
-      const dedupedMovies = deduplicateMovies(results);
       const movies =
-        page > 1 ? [...state.movies, ...dedupedMovies] : [...dedupedMovies];
+        page > 1 ? [...state.searchResults, ...results] : [...results];
 
       return {
+        searchResults: movies,
         status: Status.SUCCESS,
-        movies,
         error: '',
       };
     }
@@ -37,6 +36,13 @@ export function moviesReducer(
         ...state,
         status: Status.ERROR,
         error: action.error.message,
+      };
+    }
+    case 'clear': {
+      return {
+        searchResults: [],
+        status: Status.SUCCESS,
+        error: '',
       };
     }
     default: {

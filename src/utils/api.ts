@@ -2,31 +2,34 @@ import axios, { AxiosResponse } from 'axios';
 import { stringifyUrl, ParsedQuery } from 'query-string';
 
 export default class api {
-  async getPopularMovies(pageNumber = 1) {
+  async getPopularMovies(pageNumber = 1): Promise<AxiosResponse> {
     return axios(
       `https://${process.env.REACT_APP_TMDB_URL}/movie/popular?&language=en-UK&page=${pageNumber}&api_key=${process.env.REACT_APP_TMDB_APIKEY}`
     );
   }
 
-  async getRecommendedMovies(movieId: number) {
+  async getRecommendedMovies(movieId: number): Promise<AxiosResponse> {
     return axios(
       `https://${process.env.REACT_APP_TMDB_URL}/movie/${movieId}/recommendations?&language=en-UK&api_key=${process.env.REACT_APP_TMDB_APIKEY}`
     );
   }
 
-  async getMovieInfo(movieId: number) {
+  async getMovieInfo(movieId: number): Promise<AxiosResponse> {
     return axios(
       `https://${process.env.REACT_APP_TMDB_URL}/movie/${movieId}?&language=en-UK&api_key=${process.env.REACT_APP_TMDB_APIKEY}`
     );
   }
 
-  async getAllGenres() {
+  async getAllGenres(): Promise<AxiosResponse> {
     return axios(
       `https://${process.env.REACT_APP_TMDB_URL}/genre/movie/list?&language=en-UK&api_key=${process.env.REACT_APP_TMDB_APIKEY}`
     );
   }
 
-  async getSearchResults(searchQuery: string, pageNumber = 1) {
+  async getSearchResults(
+    searchQuery: string,
+    pageNumber = 1
+  ): Promise<AxiosResponse> {
     return axios(
       `https://${process.env.REACT_APP_TMDB_URL}/search/movie?query=${searchQuery}&page=${pageNumber}&language=en-UK&include_adult=false&api_key=${process.env.REACT_APP_TMDB_APIKEY}`
     );

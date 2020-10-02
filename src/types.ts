@@ -11,7 +11,7 @@ export interface Movie {
   release_date: string;
 }
 
-export enum MoviesStatus {
+export enum Status {
   FETCHING = 'fetching',
   SUCCESS = 'success',
   ERROR = 'error',
@@ -62,4 +62,5 @@ export type APIResults = {
 export enum AppActionTypes {
   TOGGLE_SIDEPANEL = 'togglesidepanel',
   TOGGLE_MODAL = 'togglemodal',
+  SEARCH_TERM = 'searchterm',
 }
