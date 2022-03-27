@@ -71,7 +71,7 @@ const App: React.FC = () => {
           This product uses the TMDb API but is not endorsed or certified by
           TMDb.
         </p>
-        <a href='https://www.themoviedb.org/' className='my-1 md:my-0 md:ml-2'>
+        <a href='https://www.themoviedb.org/' target="_blank" className='my-1 md:my-0 md:ml-2'>
           <TMDBLogo className='w-24 md:h-8' />
         </a>
       </footer>

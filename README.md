@@ -48,11 +48,11 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This project was created to gain more familiarity with TypeScript and React (along with hooks)
+This project was created to gain more familiarity with TypeScript and React (along with hooks).
 
-The aim of this project was 
+The aim of this project was to retrieve information from the TMDB API and display to the user with filtering and sorting.
 
-The application consists of 
+The application consists of an infinite scrolling list of movies and the ability to filter and sort. There is also a random movie selector based on user-defined criteria.
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -63,8 +63,10 @@ The application consists of
 * [React.js](https://reactjs.org/)
 * [Create React App](https://github.com/facebook/create-react-app)
 * [TailwindCSS](https://tailwindcss.com)
+* [Material-UI](https://mui.com)
 * [TMDB Api](https://www.themoviedb.org)
-
+* [Axios](https://axios-http.com)
+* [reach-router](https://reach.tech/router/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -78,7 +80,6 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
 * npm
   ```sh
   npm install --global yarn
@@ -106,7 +107,17 @@ This is an example of how to list things you need to use the software and how to
 <!-- USAGE EXAMPLES -->
 ## Things to enjoy
 
-
+* Infinite scrolling movies
+* Filtering by:
+    * Genre
+    * Rating
+    * Year From
+* Random movie picker with selection by:
+    * Year From
+    * Genre
+    * Only popular
+* Lazy loaded images
+* Lazy rendered cards (React Suspense)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -115,12 +126,10 @@ This is an example of how to list things you need to use the software and how to
 <!-- ROADMAP -->
 ## Roadmap
 
-- [X] 
-    - [ ] 
-- [ ] 
-- [ ] 
-    
+- [ ] Auth
+    - [ ] User lists
+- [ ] Search
+- [ ] UI v2
 
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
