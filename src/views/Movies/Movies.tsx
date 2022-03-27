@@ -61,7 +61,7 @@ const Movies: React.FC<CardsViewProps> = ({ isSidePanelOpen }) => {
       } catch (error) {
         moviesDispatch({
           type: 'error',
-          error,
+          error: new Error(),
         });
       }
     }

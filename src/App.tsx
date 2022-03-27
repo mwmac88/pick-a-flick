@@ -4,8 +4,6 @@ import { Router, Link } from '@reach/router';
 
 import { ReactComponent as TMDBLogo } from './images/tmdblogo.svg';
 
-import { ProvideAuth } from './utils/use-auth.js';
-
 import Modal from './components/Modal/Modal';
 import Shuffler from './components/Shuffler/Shuffler';
 import Login from './components/Auth/Login';
@@ -29,7 +27,7 @@ const App: React.FC = () => {
   }, [isSidePanelOpen, isModalVisible]);
 
   return (
-    <ProvideAuth>
+    <>
       <header className='flex flex-row items-center bg-orange-400 px-4'>
         <Link to='/' className='flex-auto py-2'>
           <h1 className='text-white text-center sm:py-4 xs:text-4xl sm:text-4xl md:text-5xl'>
@@ -77,7 +75,7 @@ const App: React.FC = () => {
           <TMDBLogo className='w-24 md:h-8' />
         </a>
       </footer>
-    </ProvideAuth>
+    </>
   );
 };
 
