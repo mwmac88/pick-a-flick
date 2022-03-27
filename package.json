@@ -19,7 +19,6 @@
     "@types/styled-components": "^5.1.1",
     "axios": "^0.26.1",
     "date-fns": "^2.15.0",
-    "firebase": "^9.6.10",
     "lodash.debounce": "^4.0.8",
     "node-sass": "7.0.1",
     "query-string": "^7.1.1",

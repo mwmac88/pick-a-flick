@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
+import ShuffleIcon from '@material-ui/icons/Shuffle';
 import { Router, Link } from '@reach/router';
-import 'firebase/firestore';
 
 import { ReactComponent as TMDBLogo } from './images/tmdblogo.svg';
 
@@ -13,7 +13,6 @@ import Login from './components/Auth/Login';
 import Movies from './views/Movies/Movies';
 import MovieView from './views/MovieView/MovieView';
 
-import ShuffleIcon from '@material-ui/icons/Shuffle';
 
 import { useAppDispatch, useAppState } from './contexts/AppContext';
 import { MoviesProvider } from './contexts/MoviesContext';
