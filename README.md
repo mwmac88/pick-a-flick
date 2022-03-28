@@ -129,6 +129,7 @@ To get a local copy up and running follow these simple example steps.
 - [ ] Auth
     - [ ] User lists
 - [ ] Search
+- [ ] Available On (Watch Proivders)
 - [ ] UI v2
 
 
