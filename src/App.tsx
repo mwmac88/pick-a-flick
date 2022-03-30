@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
+import ShuffleIcon from '@material-ui/icons/Shuffle';
 import { Router, Link } from '@reach/router';
-import 'firebase/firestore';
 
 import { ReactComponent as TMDBLogo } from './images/tmdblogo.svg';
-
-import { ProvideAuth } from './utils/use-auth.js';
 
 import Modal from './components/Modal/Modal';
 import Shuffler from './components/Shuffler/Shuffler';
@@ -13,7 +11,6 @@ import Login from './components/Auth/Login';
 import Movies from './views/Movies/Movies';
 import MovieView from './views/MovieView/MovieView';
 
-import ShuffleIcon from '@material-ui/icons/Shuffle';
 
 import { useAppDispatch, useAppState } from './contexts/AppContext';
 import { MoviesProvider } from './contexts/MoviesContext';
@@ -30,7 +27,7 @@ const App: React.FC = () => {
   }, [isSidePanelOpen, isModalVisible]);
 
   return (
-    <ProvideAuth>
+    <>
       <header className='flex flex-row items-center bg-orange-400 px-4'>
         <Link to='/' className='flex-auto py-2'>
           <h1 className='text-white text-center sm:py-4 xs:text-4xl sm:text-4xl md:text-5xl'>
@@ -74,11 +71,11 @@ const App: React.FC = () => {
           This product uses the TMDb API but is not endorsed or certified by
           TMDb.
         </p>
-        <a href='https://www.themoviedb.org/' className='my-1 md:my-0 md:ml-2'>
+        <a href='https://www.themoviedb.org/' target="_blank" rel="noreferrer" className='my-1 md:my-0 md:ml-2'>
           <TMDBLogo className='w-24 md:h-8' />
         </a>
       </footer>
-    </ProvideAuth>
+    </>
   );
 };
 

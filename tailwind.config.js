@@ -1,4 +1,9 @@
 module.exports = {
+  content: [
+    './src/App.tsx',
+    './src/components/**/*.tsx',
+    './src/views/**/*.tsx',
+  ],
   theme: {
     fontFamily: {
       body: ['Raleway', 'sans-serif'],

@@ -61,7 +61,7 @@ const Movies: React.FC<CardsViewProps> = ({ isSidePanelOpen }) => {
       } catch (error) {
         moviesDispatch({
           type: 'error',
-          error,
+          error: new Error(),
         });
       }
     }
@@ -105,6 +105,8 @@ const Movies: React.FC<CardsViewProps> = ({ isSidePanelOpen }) => {
             className='block appearance-none w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full'
             id='sort-by'
             name='sortby'
+            value={urlParams.sort_by}
+            defaultValue={SortBy['Popularity Desc']}
             onChange={(event) => {
               const sortValue: SortBy =
                 SortBy[event.target.value as keyof typeof SortBy];
@@ -112,7 +114,7 @@ const Movies: React.FC<CardsViewProps> = ({ isSidePanelOpen }) => {
             }}
           >
             {Object.entries(SortBy).map(([name, value]) => (
-              <option value={name} selected={value === urlParams.sort_by}>
+              <option key={value} value={name}>
                 {name}
               </option>
             ))}

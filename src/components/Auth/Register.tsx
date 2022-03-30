@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
 import { RouteComponentProps } from '@reach/router';
-import { useAuth } from '../../utils/use-auth';
 
 interface Props extends RouteComponentProps {
   path: string;
 }
 
 const Register: React.FC<Props> = () => {
-  const auth = useAuth();
-
   const [userDetails, setUserDetails] = useState({
     username: '',
     password: ''
   });
 
-  const registerFirebase = () => {
-    auth.signup(userDetails.username, userDetails.password);
-  };
+  //TODO: User register
+  const user = {
+    register: () => null
+  }
 
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
     console.log(e);
@@ -63,7 +61,7 @@ const Register: React.FC<Props> = () => {
         <button
           className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
           type='button'
-          onClick={registerFirebase}
+          onClick={user.register}
         >
           Register
         </button>

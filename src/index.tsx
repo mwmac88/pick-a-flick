@@ -1,17 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './styles.css';
+import './index.css';
 import App from './App';
-import FirebaseProvider from './utils/firebase';
 import * as serviceWorker from './serviceWorker';
 import { AppProvider } from './contexts/AppContext';
 
 ReactDOM.render(
-  <FirebaseProvider>
     <AppProvider>
       <App />
-    </AppProvider>
-  </FirebaseProvider>,
+    </AppProvider>,
   document.getElementById('root')
 );
 
