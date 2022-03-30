@@ -19,7 +19,7 @@ const renderCards = (movies: Array<Movie>) => {
 const CardsView: React.FC<CardsViewProps> = ({ movies }) => {
   return (
     <div className='container mx-auto xs:px-4 sm:px-3 md:px-2'>
-      <div className='grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 row-gap-6 col-gap-4 py-4'>
+      <div className='grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-6 gap-x-4 py-4'>
         {renderCards(movies)}
       </div>
     </div>
